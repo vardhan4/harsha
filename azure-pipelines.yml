@@ -20,12 +20,13 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
-- task: CopyFiles@2
+- task: Docker@2
   inputs:
-    Contents: '**/*.war'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-- task: PublishBuildArtifacts@1
+    containerRegistry: 'Docker1'
+    command: 'login'
+- task: Docker@2
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'warfile'
-    publishLocation: 'Container'
+    containerRegistry: 'Docker1'
+    repository: 'prashanth7411 / prashanth'
+    command: 'buildAndPush'
+    Dockerfile: '**/AzureDockerfile'
